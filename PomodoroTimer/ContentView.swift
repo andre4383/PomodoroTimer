@@ -5,16 +5,9 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-<<<<<<< HEAD
             Color(red: 0.98, green: 0.95, blue: 0.88)
                 .ignoresSafeArea()
 
-=======
-
-            Color(red: 0.98, green: 0.95, blue: 0.88)
-                .ignoresSafeArea()
-            
->>>>>>> 16febf4 (estilizacao)
             VStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Pomodoro")
@@ -26,13 +19,8 @@ struct ContentView: View {
                         .foregroundStyle(.black.opacity(0.5))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-<<<<<<< HEAD
 
-                Spacer()
-=======
-                .padding(.top, 25)
-                Spacer().frame(height:120)
->>>>>>> 16febf4 (estilizacao)
+                Spacer().frame(height: 120)
 
                 VStack(spacing: 24) {
                     Text("Foco")
@@ -52,36 +40,22 @@ struct ContentView: View {
                             .frame(width: 64, height: 64)
                             .background(.black)
                             .clipShape(Circle())
-<<<<<<< HEAD
-=======
                             .symbolEffect(.bounce, value: modelo.rodando)
->>>>>>> 16febf4 (estilizacao)
                     }
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 48)
                 .background(modelo.rodando
-<<<<<<< HEAD
-                            ? Color(red:0.95, green: 0.74, blue: 0.42)
-                            : Color(red:0.68, green: 0.82, blue: 0.93))
-                .clipShape(RoundedRectangle(cornerRadius: 32, style: .continuous))
-                .animation(.easeInOut(duration: 0.4), value:modelo.rodando)
-
-                Spacer()
-            }
-            .padding(.horizontal, 28)
-            .padding(.top, 80)
-=======
                             ? Color(red: 0.95, green: 0.74, blue: 0.42)
                             : Color(red: 0.68, green: 0.82, blue: 0.93))
                 .clipShape(RoundedRectangle(cornerRadius: 32, style: .continuous))
                 .scaleEffect(modelo.rodando ? 1.03 : 1.0)
                 .animation(.spring(response: 0.5, dampingFraction: 0.7), value: modelo.rodando)
+
                 Spacer()
             }
             .padding(.horizontal, 28)
             .padding(.top, 50)
->>>>>>> 16febf4 (estilizacao)
         }
     }
 
