@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var modelo = PomodoroModel()
+    @State private var editandoTempo = false
 
     var body: some View {
         ZStack {
@@ -20,27 +21,45 @@ struct ContentView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                Spacer().frame(height: 120)
+                Spacer().frame(height: 80)
 
                 VStack(spacing: 24) {
-                    Text("Foco")
+                    Text(modelo.tipoSessao.titulo)
                         .font(.system(size: 18, weight: .medium, design: .rounded))
                         .foregroundStyle(.black.opacity(0.6))
 
                     Text(formatarTempo(modelo.segundosRestantes))
                         .font(.system(size: 72, weight: .semibold, design: .monospaced))
                         .foregroundStyle(.black)
+                        .onTapGesture {
+                            guard !modelo.rodando else { return }
+                            editandoTempo = true
+                        }
 
-                    Button {
-                        if modelo.rodando { modelo.pausar() } else { modelo.iniciar() }
-                    } label: {
-                        Image(systemName: modelo.rodando ? "pause.fill" : "play.fill")
-                            .font(.system(size: 22))
-                            .foregroundStyle(.white)
-                            .frame(width: 64, height: 64)
-                            .background(.black)
-                            .clipShape(Circle())
-                            .symbolEffect(.bounce, value: modelo.rodando)
+                    VStack(spacing: 14) {
+                        Button {
+                            if modelo.rodando { modelo.pausar() } else { modelo.iniciar() }
+                        } label: {
+                            Image(systemName: modelo.rodando ? "pause.fill" : "play.fill")
+                                .font(.system(size: 22))
+                                .foregroundStyle(.white)
+                                .frame(width: 64, height: 64)
+                                .background(.black)
+                                .clipShape(Circle())
+                                .symbolEffect(.bounce, value: modelo.rodando)
+                        }
+
+                        Button {
+                            modelo.resetar()
+                        } label: {
+                            HStack(spacing: 4) {
+                                Image(systemName: "arrow.counterclockwise")
+                                    .font(.system(size: 12, weight: .semibold))
+                                Text("Reiniciar")
+                                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                            }
+                            .foregroundStyle(.black.opacity(0.5))
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity)
@@ -53,9 +72,27 @@ struct ContentView: View {
                 .animation(.spring(response: 0.5, dampingFraction: 0.7), value: modelo.rodando)
 
                 Spacer()
+
+                VStack(spacing: 14) {
+                    HStack(spacing: 10) {
+                        ForEach(0..<4) { index in
+                            Circle()
+                                .fill(index < (modelo.ciclosCompletos % 4) ? .black : Color.black.opacity(0.15))
+                                .frame(width: 10, height: 10)
+                        }
+                    }
+
+                    Text("\(modelo.ciclosCompletos) \(modelo.ciclosCompletos == 1 ? "foco" : "focos") hoje")
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                        .foregroundStyle(.black.opacity(0.5))
+                }
+                .padding(.bottom, 30)
             }
             .padding(.horizontal, 28)
             .padding(.top, 50)
+        }
+        .sheet(isPresented: $editandoTempo) {
+            EditorTempoView(modelo: modelo)
         }
     }
 
@@ -72,6 +109,7 @@ struct ContentView: View {
         let texto = f.string(from: Date())
         return texto.prefix(1).uppercased() + texto.dropFirst()
     }
+
 }
 
 #Preview {
